@@ -294,14 +294,6 @@
   wrapImplMethod(DOMImplementation, 'createHTMLDocument');
   forwardImplMethod(DOMImplementation, 'hasFeature');
 
-  // Opera don't support DOMImplementation, but it has document.implementation
-  // that can be used instead, but to be compatible with the registerWrapper
-  // it must be a prototype of constructor object (tested on Opera 12)
-  function operaDOMImplementation () {}
-  if (!window.DOMImplementation) {
-    window.DOMImplementation = document.implementation.constructor;
-  }
-
   registerWrapper(window.DOMImplementation, DOMImplementation);
 
   forwardMethodsToWrapper([

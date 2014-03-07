@@ -145,6 +145,18 @@
   var OriginalHTMLTemplateElement = window.HTMLTemplateElement;
 
   function HTMLElement(node) {
+    // Fix Opera that doesn't load HTMLUnknown element for template,shadow and content
+    switch (node.localName) {
+      case 'content':
+        if (this instanceof HTMLContentElement) break;
+        return new HTMLContentElement(node);
+      case 'shadow':
+        if (this instanceof HTMLShadowElement) break;
+        return new HTMLShadowElement(node);
+      case 'template':
+        if (this instanceof HTMLTemplateElement) break;
+        return new HTMLTemplateElement(node);
+    }
     Element.call(this, node);
   }
   HTMLElement.prototype = Object.create(Element.prototype);

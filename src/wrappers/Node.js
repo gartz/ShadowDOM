@@ -404,14 +404,20 @@
     },
 
     removeChild: function(childWrapper) {
-      assertIsNodeWrapper(childWrapper);
+      var found = false;
+      var childNodes = this.childNodes;
+      var isOpera = !!window.opera;
+      //FIXME: Opera don't use polyfills in nodes auto-created in a new Document
+      // This is a workaround for template elements that use DOcumentFragment inside
+      if(!isOpera)
+        assertIsNodeWrapper(childWrapper);
+
       if (childWrapper.parentNode !== this) {
         // IE has invalid DOM trees at times.
-        var found = false;
-        var childNodes = this.childNodes;
         for (var ieChild = this.firstChild; ieChild;
              ieChild = ieChild.nextSibling) {
-          if (ieChild === childWrapper) {
+          if (opera && ieChild.impl === childWrapper || ieChild === childWrapper) {
+            childWrapper = ieChild;
             found = true;
             break;
           }

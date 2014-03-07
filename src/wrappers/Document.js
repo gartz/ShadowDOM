@@ -299,8 +299,7 @@
   // it must be a prototype of constructor object (tested on Opera 12)
   function operaDOMImplementation () {}
   if (!window.DOMImplementation) {
-    operaDOMImplementation.prototype = document.implementation;
-    window.DOMImplementation = function operaDOMImplementation () {};
+    window.DOMImplementation = document.implementation.constructor;
   }
 
   registerWrapper(window.DOMImplementation, DOMImplementation);
